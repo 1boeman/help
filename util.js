@@ -3,7 +3,6 @@ const q = function(selector){
     return [...items]
 };
 
-
 const parents = function(el, selector) {
     const parents = [];
     while ((el = el.parentNode) && el !== document) {
@@ -12,12 +11,17 @@ const parents = function(el, selector) {
     return parents;
 }
 
+const clck = function(elementOrArray,callback){
+    if (!Array.isArray(elementOrArray)){
+        elementOrArray = [elementOrArray]
+    }
 
-const clck = function(el,callback){
-    el.addEventListener('click',function(e){
-        e.stopPropagation()
-        callback.apply(this,[e]); 
-    });
+    elementOrArray.forEach(el => {
+        el.addEventListener('click',function(e){
+            e.stopPropagation()
+            callback.apply(this,[e]); 
+        });
+    })
 };
 
 
@@ -38,47 +42,7 @@ const CSS = css => {
     return el;
 };
 
+const u = {"q":q, "ready":ready,"parents":parents,"clck":clck,"CSS":CSS};
 
-const bodyClassCallbacks = bodyClassHandlers => {
-  const classList = [...document.body.classList];
-
-  classList.map((name) => {if (typeof bodyClassHandlers[name] == 'function'){
-    bodyClassHandlers[name]()}
-  });
-}
-
-
-const clickHandlers = functionContainer => {
-    q('[data-clck]').forEach((el) => {
-        if (el.dataset.clck
-            && typeof functionContainer[el.dataset.clck] == 'function'){
-            u.clck(el, functionContainer[el.dataset.clck]);
-        }
-    });
-}
-
-
-const listen = function(el, eventName, eventHandler, selector) {
-  if (selector) {
-    const wrappedHandler = (e) => {
-      if (!e.target) return;
-      const el = e.target.closest(selector);
-      if (el) {
-        eventHandler.call(el, e);
-      }
-    };
-    el.addEventListener(eventName, wrappedHandler);
-    return wrappedHandler;
-  } else {
-    const wrappedHandler = (e) => {
-      eventHandler.call(el, e);
-    };
-    el.addEventListener(eventName, wrappedHandler);
-    return wrappedHandler;
-  }
-}
-
-
-const u = {"q":q, "ready":ready, "parents":parents, "clck":clck, "CSS":CSS, "bodyClassCallbacks":bodyClassCallbacks, "listen":listen, clickHandlers};
-
+export { q, parents, clck, ready, u}
 export default u;
