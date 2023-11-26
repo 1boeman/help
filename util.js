@@ -1,7 +1,16 @@
+function listify(elementOrArray){
+    if (!Array.isArray(elementOrArray)){
+        elementOrArray = [elementOrArray]
+    }
+    return elementOrArray;
+}
+
+
 const q = function(selector){
     let items = document.querySelectorAll(selector);
     return [...items]
 };
+
 
 const parents = function(el, selector) {
     const parents = [];
@@ -11,17 +20,16 @@ const parents = function(el, selector) {
     return parents;
 }
 
-const clck = function(elementOrArray,callback){
-    if (!Array.isArray(elementOrArray)){
-        elementOrArray = [elementOrArray]
-    }
 
-    elementOrArray.forEach(el => {
+const clck = function(elOrArray,callback){
+    elOrArray = listify(elOrArray)
+    elOrArray.forEach(el => {
         el.addEventListener('click',function(e){
             e.stopPropagation()
             callback.apply(this,[e]); 
         });
     })
+    return elOrArray;
 };
 
 
@@ -42,7 +50,40 @@ const CSS = css => {
     return el;
 };
 
-const u = {"q":q, "ready":ready,"parents":parents,"clck":clck,"CSS":CSS};
+
+
+const bodyClassCallbacks = bodyClassHandlers => {
+    const classList = [...document.body.classList];
+
+    classList.map((name) => {if (typeof bodyClassHandlers[name] == 'function'){
+        bodyClassHandlers[name]()}
+    });
+}
+
+
+const clickHandlers = functionContainer => {
+    q('[data-clck]').forEach((el) => {
+        if (el.dataset.clck
+            && typeof functionContainer[el.dataset.clck] == 'function'){
+            u.clck(el, functionContainer[el.dataset.clck]);
+        }
+    });
+}
+
+
+const listen = function(elOrArray, eventName, eventHandler) {
+    elOrArray = listify(elOrArray);
+    elOrArray.forEach(el => {
+        const wrappedHandler = (e) => {
+            eventHandler.call(el, e);
+        };
+        el.addEventListener(eventName, wrappedHandler);
+    })
+    return elOrArray;
+}
+
+
+const u = {"q":q, "ready":ready, "parents":parents, "clck":clck, "CSS":CSS, "bodyClassCallbacks":bodyClassCallbacks, "listen":listen, clickHandlers};
 
 export { q, parents, clck, ready, u}
 export default u;
