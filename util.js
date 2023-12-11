@@ -6,8 +6,9 @@ function listify(elementOrArray){
 }
 
 
-const q = function(selector){
-    let items = document.querySelectorAll(selector);
+const q = function(selector, parentElement=false){
+    let _parent = parentElement || document; 
+    let items = _parent.querySelectorAll(selector);
     return [...items]
 };
 
@@ -25,8 +26,9 @@ const clck = function(elOrArray,callback){
     elOrArray = listify(elOrArray)
     elOrArray.forEach(el => {
         el.addEventListener('click',function(e){
-            e.stopPropagation()
-            callback.apply(this,[e]); 
+            e.preventDefault();
+            e.stopPropagation();
+            callback.apply(this,[e]);
         });
     })
     return elOrArray;
