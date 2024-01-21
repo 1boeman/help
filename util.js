@@ -1,3 +1,4 @@
+// if it's not a array, put it in an array
 function listify(elementOrArray){
     if (!Array.isArray(elementOrArray)){
         elementOrArray = [elementOrArray]
@@ -6,8 +7,8 @@ function listify(elementOrArray){
 }
 
 
-const q = function(selector, parentElement=false){
-    let _parent = parentElement || document; 
+const q = function(selector, rootElement=false){
+    let _parent = rootElement || document; 
     let items = _parent.querySelectorAll(selector);
     return [...items]
 };
