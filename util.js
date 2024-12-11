@@ -23,7 +23,7 @@ const parents = function(el, selector) {
 }
 
 
-const clck = function(elOrArray,callback){
+const clck = function(elOrArray, callback){
     elOrArray = listify(elOrArray)
     elOrArray.forEach(el => {
         el.addEventListener('click',function(e){
@@ -64,8 +64,8 @@ const bodyClassCallbacks = bodyClassHandlers => {
 }
 
 
-const clickHandlers = functionContainer => {
-    q('[data-clck]').forEach((el) => {
+const clickHandlers = (functionContainer, rootElement=false) => {
+    q('[data-clck]', rootElement).forEach((el) => {
         if (el.dataset.clck
             && typeof functionContainer[el.dataset.clck] == 'function'){
             u.clck(el, functionContainer[el.dataset.clck]);
