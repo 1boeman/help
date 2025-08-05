@@ -54,6 +54,15 @@ const CSS = css => {
 };
 
 
+const CSSLink = (url) => {
+    let head = document.head;
+    let  link = document.createElement("link");
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.href = url;
+    head.appendChild(link);
+}
+
 
 const bodyClassCallbacks = bodyClassHandlers => {
     const classList = [...document.body.classList];
@@ -67,7 +76,9 @@ const bodyClassCallbacks = bodyClassHandlers => {
 const clickHandlers = (functionContainer, rootElement=false) => {
     q('[data-clck]', rootElement).forEach((el) => {
         if (el.dataset.clck
+            && !el.classList.contains('clck-listening') 
             && typeof functionContainer[el.dataset.clck] == 'function'){
+            el.classList.add('clck-listening');
             u.clck(el, functionContainer[el.dataset.clck]);
         }
     });
@@ -86,7 +97,7 @@ const listen = function(elOrArray, eventName, eventHandler) {
 }
 
 
-const u = {"q":q, "ready":ready, "parents":parents, "clck":clck, "CSS":CSS, "bodyClassCallbacks":bodyClassCallbacks, "listen":listen, clickHandlers};
+const u = {"q":q, "ready":ready, "parents":parents, "clck":clck, "CSS":CSS, "CSSLink":CSSLink, "bodyClassCallbacks":bodyClassCallbacks, "listen":listen, clickHandlers};
 
 export { q, parents, clck, ready, u}
 export default u;
