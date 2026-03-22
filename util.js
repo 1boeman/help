@@ -14,10 +14,15 @@ const q = function(selector, rootElement=false){
 };
 
 
-const parents = function(el, selector) {
+const parents = function(el, selector, firstParent=false) {
     const parents = [];
     while ((el = el.parentNode) && el !== document) {
-        if (!selector || el.matches(selector)) parents.push(el);
+        if (!selector || el.matches(selector)) {
+            parents.push(el);
+            if (firstParent){
+                break;
+            }
+        }
     }
     return parents;
 }
