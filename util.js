@@ -1,3 +1,25 @@
+const doFetch = async(url,
+                        params={},
+                        method="GET",
+                        callback=async (response)=>{
+                            const result = await response.json();
+                            console.log(result);
+                        },errorHandler=(error)=>{
+                            alert("An error has occurred. Please try again later.")
+                        })=>
+{ try {
+    const response = await fetch(url, {method:method});
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    callback(response)
+  } catch (error) {
+    console.error(error.message);
+    errorHandler(error)
+  }
+}
+
+
 // if it's not a array, put it in an array
 function listify(elementOrArray){
     if (!Array.isArray(elementOrArray)){
@@ -7,6 +29,7 @@ function listify(elementOrArray){
 }
 
 
+// select elements based on css selector
 const q = function(selector, rootElement=false){
     let _parent = rootElement || document; 
     let items = _parent.querySelectorAll(selector);
@@ -14,6 +37,7 @@ const q = function(selector, rootElement=false){
 };
 
 
+// get parents of element el filtered by css selector 
 const parents = function(el, selector, firstParent=false) {
     const parents = [];
     while ((el = el.parentNode) && el !== document) {
@@ -28,6 +52,7 @@ const parents = function(el, selector, firstParent=false) {
 }
 
 
+// add click event listener to element of array of elements
 const clck = function(elOrArray, callback){
     elOrArray = listify(elOrArray)
     elOrArray.forEach(el => {
@@ -60,7 +85,7 @@ const CSS = css => {
 
 
 const CSSLink = (url) => {
-    let head = document.head;
+    const head = document.head;
     let  link = document.createElement("link");
     link.type = "text/css";
     link.rel = "stylesheet";
@@ -102,7 +127,9 @@ const listen = function(elOrArray, eventName, eventHandler) {
 }
 
 
-const u = {"q":q, "ready":ready, "parents":parents, "clck":clck, "CSS":CSS, "CSSLink":CSSLink, "bodyClassCallbacks":bodyClassCallbacks, "listen":listen, clickHandlers};
+const u = { q, ready,parents, clck, 
+            CSS, CSSLink, bodyClassCallbacks, 
+            listen, clickHandlers, doFetch};
 
 export { q, parents, clck, ready, u}
 export default u;
