@@ -1,14 +1,13 @@
 const doFetch = async(url,
-                        params={},
-                        method="GET",
-                        callback=async (response)=>{
-                            const result = await response.json();
-                            console.log(result);
-                        },errorHandler=(error)=>{
-                            alert("An error has occurred. Please try again later.")
-                        })=>
+        params={method:"GET"},
+        callback=async (response)=>{
+            const result = await response.json();
+            console.log(result);
+        },errorHandler=(error)=>{
+            alert("An error has occurred. Please try again later.")
+        })=>
 { try {
-    const response = await fetch(url, {method:method});
+    const response = await fetch(url, params);
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
