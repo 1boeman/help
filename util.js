@@ -1,6 +1,6 @@
 const doFetch = async(url,
-        params={method:"GET"},
-        callback=async (response)=>{
+        params = {method:"GET"},
+        callback = async (response)=>{
             const result = await response.json();
             console.log(result);
         },errorHandler=(error)=>{
@@ -108,7 +108,7 @@ const clickHandlers = (functionContainer, rootElement=false) => {
             && !el.classList.contains('clck-listening') 
             && typeof functionContainer[el.dataset.clck] == 'function'){
             el.classList.add('clck-listening');
-            u.clck(el, functionContainer[el.dataset.clck]);
+            clck(el, functionContainer[el.dataset.clck]);
         }
     });
 }
