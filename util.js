@@ -19,6 +19,11 @@ const doFetch = async(url,
 }
 
 
+const doGet = async (url, callback) => {
+    doFetch(url, {method:"GET"}, callback);
+}
+
+
 // if it's not a array, put it in an array
 function listify(elementOrArray){
     if (!Array.isArray(elementOrArray)){
@@ -128,7 +133,7 @@ const listen = function(elOrArray, eventName, eventHandler) {
 
 const u = { q, ready,parents, clck, 
             CSS, CSSLink, bodyClassCallbacks, 
-            listen, clickHandlers, doFetch};
+            listen, clickHandlers, doFetch, doGet};
 
 export { q, parents, clck, ready, u}
 export default u;
