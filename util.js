@@ -1,10 +1,11 @@
 const doFetch = async(url,
-        params = {method:"GET"},
+        params = {  method:"GET",
+                    headers: {'X-Requested-With': 'XMLHttpRequest'}},
         callback = async (response)=>{
             const result = await response.json();
             console.log(result);
         },errorHandler=(error)=>{
-            alert("An error has occurred. Please try again later.")
+            console.log("An error has occurred. Please try again later.")
         })=>
 { try {
     const response = await fetch(url, params);
@@ -20,7 +21,18 @@ const doFetch = async(url,
 
 
 const doGet = async (url, callback) => {
-    doFetch(url, {method:"GET"}, callback);
+    doFetch(url, {  method:"GET",
+                    headers: {'X-Requested-With': 'XMLHttpRequest'}},
+            callback);
+}
+
+
+const doPost = async (url, body={}, callback=async function(resp){console.log(resp)}) => {
+    doFetch(url, {  method:"POST",
+                    body: JSON.stringify(body),
+                    headers: {'X-Requested-With': 'XMLHttpRequest',
+                              'Content-Type': 'application/json'}},
+            callback);
 }
 
 
@@ -133,7 +145,7 @@ const listen = function(elOrArray, eventName, eventHandler) {
 
 const u = { q, ready,parents, clck, 
             CSS, CSSLink, bodyClassCallbacks, 
-            listen, clickHandlers, doFetch, doGet};
+            listen, clickHandlers, doFetch, doGet, doPost};
 
 export { q, parents, clck, ready, u}
 export default u;
