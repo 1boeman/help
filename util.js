@@ -6,6 +6,7 @@ const doFetch = async(url,
             console.log(result);
         },errorHandler=(error)=>{
             console.log("An error has occurred. Please try again later.")
+            console.error(error.message);
         })=>
 { try {
     const response = await fetch(url, params);
@@ -15,24 +16,26 @@ const doFetch = async(url,
     callback(response)
   } catch (error) {
     console.error(error.message);
-    errorHandler(error)
+    errorHandler(error);
   }
 }
 
 
-const doGet = async (url, callback) => {
+const doGet = async (url, callback, errorHandler=(err)=>{console.log(err)}) => {
     doFetch(url, {  method:"GET",
                     headers: {'X-Requested-With': 'XMLHttpRequest'}},
-            callback);
+                    callback, 
+                    errorHandler);
 }
 
 
-const doPost = async (url, body={}, callback=async function(resp){console.log(resp)}) => {
+const doPost = async (url, body={}, callback, errorHandler=(err)=>{console.log(err)}) => {
     doFetch(url, {  method:"POST",
                     body: JSON.stringify(body),
                     headers: {'X-Requested-With': 'XMLHttpRequest',
                               'Content-Type': 'application/json'}},
-            callback);
+                    callback,
+                    errorHandler);
 }
 
 
