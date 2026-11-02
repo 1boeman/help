@@ -134,14 +134,17 @@ const clickHandlers = (functionContainer, rootElement=false) => {
 }
 
 
-const listen = function(elOrArray, eventName, eventHandler) {
+const listen = function(elOrArray, eventName_s, eventHandler) {
     elOrArray = listify(elOrArray);
+    eventName_s = listify(eventName_s);
     elOrArray.forEach(el => {
-        const wrappedHandler = (e) => {
-            eventHandler.call(el, e);
-        };
-        el.addEventListener(eventName, wrappedHandler);
-    })
+        eventName_s.forEach(eventName => {
+            const wrappedHandler = (e) => {
+                eventHandler.call(el, e);
+            };
+            el.addEventListener(eventName, wrappedHandler);
+        }); 
+    });
     return elOrArray;
 }
 
